@@ -30,8 +30,7 @@ const UserCard = ({ user }) => {
   //update the user data
   const handleUpdate = async (id) => {
     try {
-      const response = await axios.put(`${api_url}/users/${id}`, formData)
-      console.log("handleUpdate : ", response);
+       await axios.put(`${api_url}/users/${id}`, formData)
       dispatch(setRefreshData(true))
       dispatch(setIsEditing(false))
       dispatch(setEditUserId(null))
@@ -43,9 +42,8 @@ const UserCard = ({ user }) => {
 
   //delete the user
   const handleDelete = async (id) => {
-    const response = await axios.delete(`${api_url}/users/${id}`)
-    console.log("Delete response : ", response)
-    fetchUser()
+     await axios.delete(`${api_url}/users/${id}`)
+    dispatch(setRefreshData(true))
   }
 
   return (

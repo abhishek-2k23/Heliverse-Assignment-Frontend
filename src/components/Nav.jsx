@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import { FaAnglesDown } from "react-icons/fa6";
@@ -11,6 +11,9 @@ import {
   setShowFilterMenu,
   setShowSliderMenu,
 } from "../redux_store/slices/nav.slice";
+import { setCurrentPage, setTotalPages, setUsers } from "../redux_store/slices/user.slice";
+import axios from 'axios'
+const api_url = import.meta.env.VITE_API_URL;
 
 const Nav = () => {
   const navStates = useSelector((store) => store.nav);
@@ -19,6 +22,12 @@ const Nav = () => {
     showFilterMenu,
     filterOption,
   } = navStates;
+
+  //users related data 
+  const currentPage = useSelector((state) => state.users.currentPage);
+  const domain_list = useSelector((state) => state.users.domain_list);
+
+  
   const dispatch = useDispatch();
 
   const filterMenuRef = useRef(null);
@@ -35,9 +44,20 @@ const Nav = () => {
 
   // API call for search with debouncing
   const handleSearch = useCallback(
-    debounce((term) => {
+    debounce( async (term) => {
       console.log(`Searching for: ${term}`);
-      // API call logic here
+      const res = await axios.get(`${api_url}/users/search?page=${currentPage}&limit=20&searchTerm=${term}`);
+
+      console.log(res);
+
+      //set users data
+      dispatch(setUsers(res?.data?.users));
+
+      //set the total pages 
+      dispatch(setTotalPages(res?.data?.totalPages))
+
+      //set the current page
+      dispatch(setCurrentPage(res?.data?.currentPage))
     }, 300),
     []
   );
@@ -49,11 +69,20 @@ const Nav = () => {
     }
   }, [searchTerm, handleSearch]);
 
-  const handleFilterSelect = (option) => {
+  const handleFilterSelect = async (option) => {
     dispatch(setFilterOption(option));
     dispatch(setShowFilterMenu(false));
     console.log(`Filtering by: ${option}`);
-    // API call logic here
+    const res = await axios.get(`${api_url}/users?page=${currentPage}&limit=20&domain=${option}`);
+
+    //set users data
+    dispatch(setUsers(res?.data?.users));
+
+    //set the total pages 
+    dispatch(setTotalPages(res?.data?.totalPages))
+
+    //set the current page
+    dispatch(setCurrentPage(res?.data?.currentPage))
   };
 
   // Close menus when clicking outside
@@ -83,7 +112,7 @@ const Nav = () => {
     <nav className="bg-gray-800 p-4">
       <div className="container mx-auto flex justify-between items-center">
         <div className="text-white text-lg font-bold tracking-widest">
-          <Link to="/">Heliver</Link>
+          <Link to="/">Heliverse</Link>
         </div>
         <div className="hidden md:flex items-center space-x-4">
           <Link to="/team" className="text-white hover:text-gray-400">
@@ -112,18 +141,12 @@ const Nav = () => {
 
             {showFilterMenu && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50">
-                <button
-                  onClick={() => handleFilterSelect("Domain")}
-                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                >
-                  Domain
-                </button>
-                <button
-                  onClick={() => handleFilterSelect("Availability")}
-                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                >
-                  Availability
-                </button>
+                {
+                  domain_list.map(domain => (
+                    <div key={domain} onClick={() => handleFilterSelect(domain)}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"> {domain}</div>
+                  ))
+                }
               </div>
             )}
           </div>
@@ -177,18 +200,12 @@ const Nav = () => {
 
               {showFilterMenu && (
                 <div className="mt-2 w-full bg-white rounded-md shadow-lg py-2 z-50">
-                  <button
-                    onClick={() => handleFilterSelect("Domain")}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    Domain
-                  </button>
-                  <button
-                    onClick={() => handleFilterSelect("Availability")}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    Availability
-                  </button>
+                  {
+                  domain_list.map(domain => (
+                    <div key={domain} onClick={() => handleFilterSelect(domain)}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"> {domain}</div>
+                  ))
+                }
                 </div>
               )}
             </div>

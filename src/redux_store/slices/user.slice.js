@@ -10,14 +10,13 @@ const userSlice = createSlice({
     isEditing: false,
     editUserId: null,
     refreshData: false,
+    refreshFilterData: false,
     domain_list: [],
     data: [],
   },
   reducers: {
     setUsers(state, action) {
       state.data = action.payload;
-      console.log("user Data : ", state);
-
     },
     setCurrentPage(state, action) {
         state.currentPage = action.payload;
@@ -40,10 +39,13 @@ const userSlice = createSlice({
     },
     setRefreshData: (state,action) => {
       state.refreshData = action.payload;
+    },
+    setRefreshFilterData(state, action){
+      state.refreshFilterData = action.payload;
     }
   },
 });
 
-export const { setUsers, updateUser, deleteUser, setCurrentPage, setIsEditing,setTotalPages,setDomainList,setEditUserId,setRefreshData } = userSlice.actions;
+export const { setUsers, updateUser, deleteUser, setCurrentPage, setIsEditing,setTotalPages,setDomainList,setEditUserId,setRefreshData,setRefreshFilterData } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -25,7 +25,6 @@ const Nav = () => {
 
   //users related data 
   const currentPage = useSelector((state) => state.users.currentPage);
-  const domain_list = useSelector((state) => state.users.domain_list);
 
   
   const dispatch = useDispatch();
@@ -69,21 +68,7 @@ const Nav = () => {
     }
   }, [searchTerm, handleSearch]);
 
-  const handleFilterSelect = async (option) => {
-    dispatch(setFilterOption(option));
-    dispatch(setShowFilterMenu(false));
-    console.log(`Filtering by: ${option}`);
-    const res = await axios.get(`${api_url}/users?page=${currentPage}&limit=20&domain=${option}`);
-
-    //set users data
-    dispatch(setUsers(res?.data?.users));
-
-    //set the total pages 
-    dispatch(setTotalPages(res?.data?.totalPages))
-
-    //set the current page
-    dispatch(setCurrentPage(res?.data?.currentPage))
-  };
+  
 
   // Close menus when clicking outside
   useEffect(() => {
@@ -142,9 +127,9 @@ const Nav = () => {
             {showFilterMenu && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50">
                 {
-                  domain_list.map(domain => (
-                    <div key={domain} onClick={() => handleFilterSelect(domain)}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"> {domain}</div>
+                  ["Domain","Gender","Availability"].map(filterOption => (
+                    <div key={filterOption} onClick={() => dispatch(setFilterOption(filterOption))}
+                    className="block w-full text-left px-4 py-2 text-base text-gray-700 hover:bg-gray-100 cursor-pointer font-semibold"> {filterOption}</div>
                   ))
                 }
               </div>
@@ -201,9 +186,9 @@ const Nav = () => {
               {showFilterMenu && (
                 <div className="mt-2 w-full bg-white rounded-md shadow-lg py-2 z-50">
                   {
-                  domain_list.map(domain => (
-                    <div key={domain} onClick={() => handleFilterSelect(domain)}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"> {domain}</div>
+                  ["Domain","Gender","Availability"].map(filterOption => (
+                    <div key={filterOption} onClick={() => dispatch(setFilterOption(filterOption))}
+                    className="block w-full text-left px-4 py-2 text-base text-gray-700 hover:bg-gray-100 cursor-pointer font-semibold"> {filterOption}</div>
                   ))
                 }
                 </div>

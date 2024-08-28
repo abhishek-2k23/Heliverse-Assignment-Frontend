@@ -5,6 +5,9 @@ const initialState = {
     team_list: [],
     show_team_view: false,
     user_id: null,
+    create_team : false,
+    newTeamName: '',
+    showTeamMembers: '',
 
 };
 
@@ -24,13 +27,30 @@ const teamSlice = createSlice({
         state.user_id = action.payload;
         state.show_team_view = true;
       },
+      setCreateTeam: (state, action) => {
+        state.create_team = action.payload;
+      },
+      setNewTeamName: (state, action) => {
+        state.newTeamName = action.payload;
+        console.log("team name : ", state.newTeamName)
+      },
+      
+      setShowTeamMembers: (state, action) => {
+        if(state.showTeamMembers === action.payload){
+          state.showTeamMembers = 'false';
+        }else{
+          state.showTeamMembers = action.payload;
+          console.log(state.showTeamMembers);
+        }
+      },
   }
 })
 
-// Export the actions
+//  actions
 export const {
     setTeamList,
     setShowTeamView,setUserId,
+    setCreateTeam,setNewTeamName,setShowTeamMembers
 } = teamSlice.actions;
 
 // Export the reducer

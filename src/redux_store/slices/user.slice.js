@@ -11,8 +11,10 @@ const userSlice = createSlice({
     editUserId: null,
     refreshData: false,
     refreshFilterData: false,
+    addUserData: {},
     domain_list: [],
     data: [],
+
   },
   reducers: {
     setUsers(state, action) {
@@ -42,10 +44,13 @@ const userSlice = createSlice({
     },
     setRefreshFilterData(state, action){
       state.refreshFilterData = action.payload;
-    }
+    },
+    setAddUserData(state, action){
+      state.addUserData = action.payload;
+    },
   },
 });
 
-export const { setUsers, updateUser, deleteUser, setCurrentPage, setIsEditing,setTotalPages,setDomainList,setEditUserId,setRefreshData,setRefreshFilterData } = userSlice.actions;
+export const { setUsers, updateUser, deleteUser, setCurrentPage, setIsEditing,setTotalPages,setDomainList,setEditUserId,setRefreshData,setRefreshFilterData,setAddUserData } = userSlice.actions;
 
 export default userSlice.reducer;

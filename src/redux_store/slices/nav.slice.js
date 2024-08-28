@@ -6,7 +6,8 @@ const initialState = {
   filterOption: 'Filter',
   showFilterMenu: false,
   showSliderMenu: false,
-  activeFilterCategory: 'All'
+  activeFilterCategory: 'All',
+  addUser: false,
 };
 
 // Create the slice
@@ -30,6 +31,9 @@ const navSlice = createSlice({
       state.activeFilterCategory = action.payload;
       
       console.log("filter cat : ", state.activeFilterCategory);
+    },
+    setAddUser(state, action){
+      state.addUser = action.payload;
     }
   },
 });
@@ -40,7 +44,7 @@ export const {
   setFilterOption,
   setShowFilterMenu,
   setShowSliderMenu,
-  setActiveFilterCategory
+  setActiveFilterCategory,setAddUser
 } = navSlice.actions;
 
 // Export the reducer

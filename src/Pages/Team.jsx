@@ -7,6 +7,7 @@ import {
 } from "../redux_store/slices/team.slice"
 import { useFetchTeam } from "../hooks/useFetchTeam"
 import Loader from "../components/Loader"
+import TeamCard from "../components/TeamCard"
 
 const Team = () => {
   //custorm hook
@@ -23,8 +24,10 @@ const Team = () => {
   const teamLoading = useSelector((store) => store?.team?.teamLoading)
 
   const dispatch = useDispatch()
-
-  //no team available case
+  if(teamLoading){
+    return <div className="min-h-screen bg-gray-900"><Loader /></div>
+  }
+    //no team available case
   if (!team_list || team_list?.length === 0) {
     return (
       <div className="h-screen bg-gray-900 text-white flex items-center justify-center flex-col p-4">
@@ -99,46 +102,8 @@ const Team = () => {
         )}
       </div>
   <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 auto-rows-min">
-    {teamLoading? <Loader /> : team_list?.map((team) => (
-      <div
-        key={team?.team_id}
-        className={`bg-white p-4 rounded-lg shadow-lg text-gray-900 transition-transform duration-300 ${
-          showTeamMembers === team?.team_name ? "row-span-2" : "self-start"
-        }`}
-      >
-        <div className="flex justify-between px-2 items-center"><h2 className="text-xl font-semibold">{team?.team_name}</h2>
-        <button
-          onClick={() => dispatch(setShowTeamMembers(team?.team_name))}
-          className="mt-2 bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-600"
-        >
-          {showTeamMembers === team?.team_name ? "Hide Members" : "Show Members"}
-        </button> </div>
-        
-        {showTeamMembers === team?.team_name && (
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold mb-2">Members:{` ${team?.users?.length}`}</h3>
-            <ul>
-              {team?.users?.map((user) => (
-                <li key={user?.id} className="border-b border-gray-900 py-2">
-                  <p>
-                    <strong>Name:</strong>{" "}
-                    {`${user?.first_name} ${user?.last_name} `}
-                  </p>
-                  <p>
-                    <strong>Email:</strong> {user?.email}
-                  </p>
-                  <p>
-                    <strong>Domain:</strong> {user?.domain}
-                  </p>
-                  <p>
-                    <strong>Gender:</strong> {user?.gender}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
+    {team_list?.map((team) => (
+     <TeamCard key={team?.team_id} team={team}/>
     ))}
   </div>
 </div>

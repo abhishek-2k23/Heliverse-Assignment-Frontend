@@ -17,12 +17,12 @@ export const useFetchTeam = () => {
 
     //handle filter data
     const handleFetchTeam = async () => {
-      setTeamLoading(true);
+        dispatch(setTeamLoading(true));
         const res = await axios.get(`${api_url}/team/getTeam`);
         
         //set users data
         dispatch(setTeamList(res?.data?.teams));
-        setTeamLoading(false);
+        dispatch(setTeamLoading(false));
     
       };
 

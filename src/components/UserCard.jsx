@@ -2,7 +2,11 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { setEditUserId, setIsEditing, setRefreshData } from "../redux_store/slices/user.slice"
+import { setUserId } from "../redux_store/slices/team.slice"
 import { useFetchUser } from "../hooks/useFetchUser"
+import {FaPlus} from 'react-icons/fa';
+import { useFetchTeam } from "../hooks/useFetchTeam"
+
 const api_url = import.meta.env.VITE_API_URL
 
 const UserCard = ({ user }) => {
@@ -10,6 +14,8 @@ const UserCard = ({ user }) => {
   const editUserId = useSelector((store) => store.users.editUserId)
   const refreshData = useSelector((store) => store.users.refreshData)
   const dispatch = useDispatch()
+
+  const handleFetchTeam = useFetchTeam();
 
   //set form data
   const [formData, setFormData] = useState({
@@ -47,12 +53,21 @@ const UserCard = ({ user }) => {
   }
 
   return (
-    <div className="p-4 text-white rounded shadow-lg flex flex-col items-center justify-center bg-gray-800">
+    <div className="p-4 text-white rounded shadow-lg flex flex-col items-center justify-center bg-gray-800 relative">
       <img
         className="w-24 h-24 rounded-full bg-gray-700"
         src={user?.avatar}
         alt={`${user?.first_name} ${user?.last_name}`}
       />
+      <div className="absolute top-2 right-2" onClick={() => {dispatch(setUserId(user?.id)); handleFetchTeam}}>
+        <div
+          
+          className="bg-blue-500 text-white p-2 rounded-full focus:outline-none hover:bg-blue-600"
+        >
+          <FaPlus />
+        </div>
+      </div>
+
       <div className="mt-4 text-center">
         {isEditing && user?.id === editUserId ? (
           <>

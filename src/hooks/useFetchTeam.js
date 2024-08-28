@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setTeamList, setNewTeamName, setShowTeamMembers, setShowTeamView, setCreateTeam, setTeamLoading} from "../redux_store/slices/team.slice";
+import { setTeamList, setNewTeamName, setShowTeamMembers, setShowTeamView, setCreateTeam, setTeamLoading, setDeleteTeamId} from "../redux_store/slices/team.slice";
 import toast from 'react-hot-toast'
 
 import axios from "axios";
@@ -10,6 +10,7 @@ export const useFetchTeam = () => {
     const dispatch = useDispatch();
     const user_id = useSelector((store) => store.team.user_id);
     const show_team_view = useSelector((store) => store.team.show_team_view);
+    const deleteTeamId = useSelector((store) => store.team.deleteTeamId);
 
     const [fetch, setFetch] = useState(true);
 
@@ -45,6 +46,18 @@ export const useFetchTeam = () => {
           console?.error('Error creating team:', error);
         }
       };
+
+      const deleteTeam = async (teamId) => {
+        let toastid = toast.loading('Deleting team')
+        await axios.delete(`${api_url}/team/deleteTeam/${teamId}`);
+        
+        toast.dismiss(toastid);
+        toast.success('Team deleted', teamId);
+        dispatch(setDeleteTeamId(''))
+
+        handleFetchTeam();
+      };
+      
     
       const toggleShowTeamMembers = (teamId) => {
         dispatch(setShowTeamMembers((prevState) => ({
@@ -79,5 +92,5 @@ export const useFetchTeam = () => {
         }
       },[show_team_view, fetch])
 
-    return {handleFetchTeam, handleCreateTeam, toggleShowTeamMembers, handleTeamSelect};
+    return {handleFetchTeam, handleCreateTeam, toggleShowTeamMembers, handleTeamSelect, deleteTeam};
 }

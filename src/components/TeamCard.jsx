@@ -1,15 +1,16 @@
 import React from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { setShowTeamMembers } from "../redux_store/slices/team.slice"
+import { setDeleteTeamId, setShowTeamMembers } from "../redux_store/slices/team.slice"
 import { MdDeleteForever } from "react-icons/md"
 import ShowTeamMembers from "./ShowTeamMembers"
 import { FaAngleDoubleUp } from "react-icons/fa";
 import { FaAngleDoubleDown } from "react-icons/fa";
+import { useFetchTeam } from "../hooks/useFetchTeam"
 
 const TeamCard = ({ team }) => {
   const showTeamMembers = useSelector((store) => store?.team?.showTeamMembers)
   const dispatch = useDispatch()
-
+  const {deleteTeam} = useFetchTeam();
   return (
     <div
       className={`bg-white p-4 rounded-lg shadow-lg text-gray-900 transition-transform duration-300 ${
@@ -28,7 +29,7 @@ const TeamCard = ({ team }) => {
             ? < FaAngleDoubleUp/>
             : <FaAngleDoubleDown />}
         </button>{" "}
-        <button className="w-8 h-8 rounded-full bg-red-500 text-white hover:bg-white hover:text-red-500 hover:border hover:border-red-600 text-center flex justify-center items-center"><MdDeleteForever /></button>
+        <button onClick={() => {deleteTeam(team?.team_id);}} className="w-8 h-8 rounded-full bg-red-500 text-white hover:bg-white hover:text-red-500 hover:border hover:border-red-600 text-center flex justify-center items-center"><MdDeleteForever /></button>
         </div>
       </div>
 

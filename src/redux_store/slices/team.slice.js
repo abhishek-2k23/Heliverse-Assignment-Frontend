@@ -8,6 +8,7 @@ const initialState = {
     create_team : false,
     newTeamName: '',
     showTeamMembers: '',
+    teamLoading: false,
 
 };
 
@@ -43,6 +44,10 @@ const teamSlice = createSlice({
           console.log(state.showTeamMembers);
         }
       },
+
+      setTeamLoading: (state, action) => {
+        state.teamLoading = action.payload
+      }
   }
 })
 
@@ -50,7 +55,7 @@ const teamSlice = createSlice({
 export const {
     setTeamList,
     setShowTeamView,setUserId,
-    setCreateTeam,setNewTeamName,setShowTeamMembers
+    setCreateTeam,setNewTeamName,setShowTeamMembers,setTeamLoading
 } = teamSlice.actions;
 
 // Export the reducer

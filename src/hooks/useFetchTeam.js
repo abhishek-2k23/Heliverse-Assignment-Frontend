@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setTeamList, setNewTeamName, setShowTeamMembers, setShowTeamView, setCreateTeam} from "../redux_store/slices/team.slice";
+import { setTeamList, setNewTeamName, setShowTeamMembers, setShowTeamView, setCreateTeam, setTeamLoading} from "../redux_store/slices/team.slice";
 import toast from 'react-hot-toast'
 
 import axios from "axios";
@@ -10,17 +10,19 @@ export const useFetchTeam = () => {
     const dispatch = useDispatch();
     const user_id = useSelector((store) => store.team.user_id);
     const show_team_view = useSelector((store) => store.team.show_team_view);
+
     const [fetch, setFetch] = useState(true);
 
     const newTeamName = useSelector((store) => store?.team?.newTeamName);
 
     //handle filter data
     const handleFetchTeam = async () => {
+      setTeamLoading(true);
         const res = await axios.get(`${api_url}/team/getTeam`);
-        console.log(res);
-
+        
         //set users data
         dispatch(setTeamList(res?.data?.teams));
+        setTeamLoading(false);
     
       };
 

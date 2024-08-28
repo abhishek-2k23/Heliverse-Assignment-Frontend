@@ -6,7 +6,7 @@ import {
   setShowTeamMembers,
 } from "../redux_store/slices/team.slice"
 import { useFetchTeam } from "../hooks/useFetchTeam"
-const api_url = import.meta.env.VITE_API_URL
+import Loader from "../components/Loader"
 
 const Team = () => {
   //custorm hook
@@ -20,6 +20,7 @@ const Team = () => {
   const create_team = useSelector((store) => store?.team?.create_team)
   const newTeamName = useSelector((store) => store?.team?.newTeamName)
   const showTeamMembers = useSelector((store) => store?.team?.showTeamMembers)
+  const teamLoading = useSelector((store) => store?.team?.teamLoading)
 
   const dispatch = useDispatch()
 
@@ -98,7 +99,7 @@ const Team = () => {
         )}
       </div>
   <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 auto-rows-min">
-    {team_list?.map((team) => (
+    {teamLoading? <Loader /> : team_list?.map((team) => (
       <div
         key={team?.team_id}
         className={`bg-white p-4 rounded-lg shadow-lg text-gray-900 transition-transform duration-300 ${

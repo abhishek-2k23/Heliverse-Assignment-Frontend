@@ -5,7 +5,7 @@ const userSlice = createSlice({
   initialState: {
     currentPage: 1,
     totalPages: 1,
-    loading: true,
+    loading: false,
     error: '',
     isEditing: false,
     editUserId: null,
@@ -51,6 +51,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUsers, updateUser, deleteUser, setCurrentPage, setIsEditing,setTotalPages,setDomainList,setEditUserId,setRefreshData,setRefreshFilterData,setAddUserData } = userSlice.actions;
+export const { setUsers, updateUser, deleteUser, setCurrentPage, setIsEditing,setTotalPages,setDomainList,setLoading,setEditUserId,setRefreshData,setRefreshFilterData,setAddUserData } = userSlice.actions;
 
 export default userSlice.reducer;

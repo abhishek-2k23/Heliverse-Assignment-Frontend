@@ -1,17 +1,12 @@
-// src/components/UserList.js
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setUsers, deleteUser, setDomainList, setTotalPages, setCurrentPage } from '../redux_store/slices/user.slice';
-import axios from 'axios';
-const api_url = import.meta.env.VITE_API_URL;
+import { useSelector } from 'react-redux';
 import UsersCard from '../components/UserCard';
 import { useFetchUser } from '../hooks/useFetchUser';
 
 const UserList = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const users = useSelector((state) => state.users.data);
-  const [editingUserId, setEditingUserId] = useState(null);
-  const [formData, setFormData] = useState({});
+  // const [editingUserId, setEditingUserId] = useState(null);
+  // const [formData, setFormData] = useState({});
 
   useFetchUser();
 
